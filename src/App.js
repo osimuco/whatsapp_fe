@@ -10,7 +10,6 @@ function App() {
   console.log(user);
   return (
     <div className='dark'>
-      <button onClick={() => dispatch(logout())}>logout</button>
       <Router>
         <Routes>
           <Route exact path='/' element={<Home />} />
