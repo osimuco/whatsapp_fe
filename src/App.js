@@ -6,7 +6,7 @@ import { logout } from './features/userSlice';
 import { useDispatch, useSelector } from 'react-redux';
 function App() {
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.user);
+  const { user } = useSelector((state) => ({ ...state })); // açıklama: Redux store'dan user durumunu alıyoruz ve bileşen içinde kullanmak üzere user değişkenine atıyoruz
   console.log(user);
   return (
     <div className='dark'>
