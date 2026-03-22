@@ -6,7 +6,7 @@ import AuthInput from './AuthInput'
 import { useDispatch, useSelector } from 'react-redux'
 import PulseLoader from 'react-spinners/PulseLoader'
 import { Link, useNavigate } from 'react-router-dom'
-import { registerUser } from '../../features/userSlice'
+import { changeStatus, registerUser } from '../../features/userSlice'
 import Picture from './Picture'
 const cloud_secret = process.env.REACT_APP_CLOUD_SECRET_NAME;
 const cloud_name = process.env.REACT_APP_CLOUD_NAME;
@@ -24,25 +24,13 @@ function RegisterForm() {
         resolver: yupResolver(signUpValidationSchema) // açıklama: useForm hook'unu kullanarak form durumunu yönetiyoruz. resolver olarak yupResolver'ı kullanarak Yup ile tanımladığımız doğrulama şemasını form doğrulaması için kullanıyoruz. Bu, form verilerinin doğrulanmasını sağlar ve hataları errors nesnesine ekler.
     })
     const onSubmit = async (data) => {
-        let res;
-        if (picture) {
-            await uploadPicture();
-        }
-        else {
-            res = await dispatch(registerUser({ ...data, picture: '' })); // açıklama: form verilerini alır ve registerUser action'ını dispatch eder. Bu, kullanıcı kayıt işlemini başlatır ve Redux store'daki durumu günceller.
+        dispatch(changeStatus("loading"));
+        let res = await dispatch(registerUser({ ...data, picture: readablePicture })); // açıklama: form verilerini alır ve registerUser action'ını dispatch eder. Bu, kullanıcı kayıt işlemini başlatır ve Redux store'daki durumu günceller.
 
-        }
-        if (res.payload.user) {
+        if (res?.payload?.user) {
             navigate('/');
         }
-    };
 
-
-    const uploadPicture = async () => {
-        const formData = new FormData();
-        formData.append("upload_preset", cloud_secret);
-        formData.append("file", picture);
-        const res = await fetch(`https://api.cloudinary.com/v1_1/${cloud_name}/image/upload`, formData);
     };
 
     return (

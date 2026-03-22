@@ -46,6 +46,9 @@ export const userSlice = createSlice({
                 status: "",
                 token: "",
             };
+        },
+        changeStatus: (state, action) => { // açıklama: changeStatus reducer'ı, kullanıcının durumunu güncellemek için kullanılır. action.payload, yeni durumu içerir ve state.status bu yeni durumla güncellenir.
+            state.status = action.payload;
         }
     },
     // açıklama: extraReducers, createAsyncThunk tarafından oluşturulan aksiyonların durumlarını yönetmek için kullanılır. registerUser.pending, registerUser.fulfilled ve registerUser.rejected durumlarına göre state'i günceller. pending durumunda, status "loading" olarak ayarlanır. fulfilled durumunda, status "succeeded" olarak ayarlanır ve user bilgileri güncellenir. rejected durumunda ise status "failed" olarak ayarlanır ve error mesajı güncellenir.
@@ -68,7 +71,7 @@ export const userSlice = createSlice({
 });
 
 // açıklama: userSlice.actions, userSlice içinde tanımlanan reducer'ların otomatik olarak oluşturulan aksiyon yaratıcılarını içerir. logout, kullanıcı çıkış yaptığında durumun sıfırlanması için kullanılan bir aksiyon yaratıcıdır.
-export const { logout } = userSlice.actions;
+export const { logout, changeStatus } = userSlice.actions;
 
 // açıklama: userSlice.reducer, userSlice içinde tanımlanan reducer'ları içeren bir fonksiyondur. Bu fonksiyon, Redux store'unun reducer'ı olarak kullanılmak üzere dışa aktarılır.
 export default userSlice.reducer;
